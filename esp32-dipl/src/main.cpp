@@ -36,8 +36,9 @@ void loop()
   delay(1000);
   // turn the LED off by making the voltage LOW
   digitalWrite(LED_BUILTIN, LOW);
+  sendRequest();
   Serial.println("Blink");
 
    // wait for a second
-  delay(1000);
+  delay(5000);
 }
