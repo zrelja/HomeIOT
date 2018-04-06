@@ -7,6 +7,7 @@
 #include <WiFiMulti.h>
 #include <WiFiClient.h>
 #include "BMP.h"
+#define USE_MQTT
 
 const int SIOD = 25; //SDA
 const int SIOC = 23; //SCL
@@ -26,15 +27,20 @@ const int D5 = 18;
 const int D6 = 36;
 const int D7 = 19;
 
-//const int TFT_DC = 2;
-//const int TFT_CS = 5;
-//DIN <- MOSI 23
-//CLK <- SCK 18
 
-#define ssid1        "zvone"
-#define password1    "hajduk1950"
-//#define ssid2        ""
-//#define password2    ""
+// wifi creds
+#define ssid1        "Tehnoloski_park_Zagreb"
+#define password1    "TpZ232!Raza"
+
+//mqtt credentials
+#ifdef USE_MQTT
+  #define MQTT_SERVER      "192.168.254.252"
+  #define MQTT_SERVERPORT  1883
+  #define MQTT_USERNAME    "zvonimir"
+  #define MQTT_KEY         "zadvarje"
+  #define MQTT_TOPIC       "iot/camera/frontDoorCamera"
+  #include "MQTTStuff.h"
+#endif
 
 //Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS,  TFT_DC, 0/*no reset*/);
 OV7670 *camera;
@@ -104,7 +110,6 @@ void serve()
 void setup()
 {
   Serial.begin(115200);
-
   wifiMulti.addAP(ssid1, password1);
   //wifiMulti.addAP(ssid2, password2);
   Serial.println("Connecting Wifi...");
@@ -115,6 +120,19 @@ void setup()
       Serial.println(WiFi.localIP());
   }
 
+  int retry = 3;
+  Serial.println(WiFi.localIP());
+
+  #ifdef USE_MQTT
+  MQTTConnect();
+  while(!mqttcamera.publish(WiFi.localIP().toString().c_str()) && retry)
+  {
+    retry--;
+    delay(1000);
+  }
+  mqtt.disconnect();
+  #endif
+
   camera = new OV7670(OV7670::Mode::QQVGA_RGB565, SIOD, SIOC, VSYNC, HREF, XCLK, PCLK, D0, D1, D2, D3, D4, D5, D6, D7);
   BMP::construct16BitHeader(bmpHeader, camera->xres, camera->yres);
   server.begin();
@@ -124,9 +142,12 @@ void setup()
 
 void loop()
 {
-    Serial.println("loop");
+  Serial.println(WiFi.localIP());
+
   camera->oneFrame();
   Serial.println("kamera slikana");
+  Serial.println(WiFi.localIP());
+
   serve();
 
 }
