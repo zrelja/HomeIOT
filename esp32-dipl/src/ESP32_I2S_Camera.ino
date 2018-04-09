@@ -29,8 +29,11 @@ const int D7 = 19;
 
 
 // wifi creds
+//ured
 #define ssid1        "Tehnoloski_park_Zagreb"
 #define password1    "TpZ232!Raza"
+//#define ssid1        "blabla"
+//#define password1    "hajduk1950"
 
 //mqtt credentials
 #ifdef USE_MQTT
@@ -39,10 +42,11 @@ const int D7 = 19;
   #define MQTT_USERNAME    "zvonimir"
   #define MQTT_KEY         "zadvarje"
   #define MQTT_TOPIC       "iot/camera/frontDoorCamera"
+  #define MQTT_TOPIC2       "iot/camera/frontDoorCamera2"
+
   #include "MQTTStuff.h"
 #endif
 
-//Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS,  TFT_DC, 0/*no reset*/);
 OV7670 *camera;
 
 WiFiMulti wifiMulti;
@@ -122,32 +126,40 @@ void setup()
 
   int retry = 3;
   Serial.println(WiFi.localIP());
-
-  #ifdef USE_MQTT
+  // subscribe to "iot/camera/frontDoorCamera" if somebody sends message you will now
+  mqtt.subscribe(&requestForCameraImage);
   MQTTConnect();
+
+// gonna publish camera IP address here to anybody who is subscribed to iot/camera/frontDoorCamera
   while(!mqttcamera.publish(WiFi.localIP().toString().c_str()) && retry)
   {
     retry--;
     delay(1000);
   }
-  mqtt.disconnect();
-  #endif
-
   camera = new OV7670(OV7670::Mode::QQVGA_RGB565, SIOD, SIOC, VSYNC, HREF, XCLK, PCLK, D0, D1, D2, D3, D4, D5, D6, D7);
   BMP::construct16BitHeader(bmpHeader, camera->xres, camera->yres);
   server.begin();
-    Serial.println("server begin");
+  Serial.println("server begin");
 }
 
 
 void loop()
 {
-  Serial.println(WiFi.localIP());
+    // waiting for a message on "iot/camera/frontDoorCamera"
+    Adafruit_MQTT_Subscribe *subscription;
+    while ((subscription = mqtt.readSubscription(1000))) {
+      if (subscription == &requestForCameraImage) {
+        Serial.print("signal primljen");
+      //  Serial.println((char*)tCommand.lastread);
+      }
+    }
+
+/*  Serial.println(WiFi.localIP());
 
   camera->oneFrame();
   Serial.println("kamera slikana");
   Serial.println(WiFi.localIP());
 
   serve();
-
+*/
 }

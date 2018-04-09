@@ -5,7 +5,7 @@
 WiFiClient client;
 Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, MQTT_SERVERPORT, MQTT_USERNAME, MQTT_KEY);
 Adafruit_MQTT_Publish mqttcamera = Adafruit_MQTT_Publish(&mqtt, MQTT_TOPIC);
-Adafruit_MQTT_Subscribe mqttcameraonoff = Adafruit_MQTT_Subscribe(&mqtt, "homeCamera/onoff");
+Adafruit_MQTT_Subscribe requestForCameraImage = Adafruit_MQTT_Subscribe(&mqtt, MQTT_TOPIC);
 
 bool MQTTConnect() {
   int8_t ret;
@@ -33,22 +33,13 @@ bool MQTTConnect() {
 
 void MQTTLoop()
 {
-    //MQTT_connect();
-/*  Adafruit_MQTT_Subscribe *subscription;
-  while ((subscription = mqtt.readSubscription(5000))) {
-    if (subscription == &mqttcameraonoff) {
-      Serial.print(F("Got: "));
-      Serial.println((char *)mqttcameraonoff.lastread);
-    }
-  }
-*/
+
   // Now we can publish stuff!
   //max 64kb
-  /*if (!mqttcamera.publish(bmp, 66)) 
+  /*if (!mqttcamera.publish(bmp, 66))
   {
     Serial.println(F("Failed"));
   } else {
     Serial.println(F("OK!"));
   }*/
 }
-
