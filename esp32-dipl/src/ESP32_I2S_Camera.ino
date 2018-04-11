@@ -144,12 +144,15 @@ void setup()
 
 
 void loop()
-{
+{  int retry = 3;
+
     // waiting for a message on "iot/camera/frontDoorCamera"
     Adafruit_MQTT_Subscribe *subscription;
-    while ((subscription = mqtt.readSubscription(1000))) {
+    while ((subscription = mqtt.readSubscription(100))) {
       if (subscription == &requestForCameraImage) {
-        Serial.print("signal primljen");
+        Serial.print("signal primljen\n");
+        mqttcamera.publish("ha-ha");
+
       //  Serial.println((char*)tCommand.lastread);
       }
     }
