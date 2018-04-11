@@ -41,8 +41,9 @@ const int D7 = 19;
   #define MQTT_SERVERPORT  1883
   #define MQTT_USERNAME    "zvonimir"
   #define MQTT_KEY         "zadvarje"
-  #define MQTT_TOPIC       "iot/camera/frontDoorCamera"
-  #define MQTT_TOPIC2       "iot/camera/frontDoorCamera2"
+  #define MQTT_CAMERA1      "iot/camera/1"
+  #define MQTT_CAMERA1_IP      "iot/camera/ip/1"
+
 
   #include "MQTTStuff.h"
 #endif
@@ -130,12 +131,7 @@ void setup()
   mqtt.subscribe(&requestForCameraImage);
   MQTTConnect();
 
-// gonna publish camera IP address here to anybody who is subscribed to iot/camera/frontDoorCamera
-  while(!mqttcamera.publish(WiFi.localIP().toString().c_str()) && retry)
-  {
-    retry--;
-    delay(1000);
-  }
+
   camera = new OV7670(OV7670::Mode::QQVGA_RGB565, SIOD, SIOC, VSYNC, HREF, XCLK, PCLK, D0, D1, D2, D3, D4, D5, D6, D7);
   BMP::construct16BitHeader(bmpHeader, camera->xres, camera->yres);
   server.begin();
@@ -148,11 +144,15 @@ void loop()
 
     // waiting for a message on "iot/camera/frontDoorCamera"
     Adafruit_MQTT_Subscribe *subscription;
-    while ((subscription = mqtt.readSubscription(100))) {
+    while ((subscription = mqtt.readSubscription(5000))) {
       if (subscription == &requestForCameraImage) {
         Serial.print("signal primljen\n");
-        mqttcamera.publish("ha-ha");
-
+         delay(500);
+        Serial.println((char *)requestForCameraImage.lastread);
+        if(mqttcamera.publish(WiFi.localIP().toString().c_str()))
+        {
+          Serial.println("IP address sent");
+        }
       //  Serial.println((char*)tCommand.lastread);
       }
     }

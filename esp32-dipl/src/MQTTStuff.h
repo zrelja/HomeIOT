@@ -4,8 +4,8 @@
 
 WiFiClient client;
 Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, MQTT_SERVERPORT, MQTT_USERNAME, MQTT_KEY);
-Adafruit_MQTT_Publish mqttcamera = Adafruit_MQTT_Publish(&mqtt, MQTT_TOPIC);
-Adafruit_MQTT_Subscribe requestForCameraImage = Adafruit_MQTT_Subscribe(&mqtt, MQTT_TOPIC);
+Adafruit_MQTT_Publish mqttcamera = Adafruit_MQTT_Publish(&mqtt, MQTT_CAMERA1_IP);
+Adafruit_MQTT_Subscribe requestForCameraImage = Adafruit_MQTT_Subscribe(&mqtt, MQTT_CAMERA1);
 
 bool MQTTConnect() {
   int8_t ret;
