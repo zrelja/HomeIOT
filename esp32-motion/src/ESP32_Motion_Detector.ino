@@ -4,29 +4,34 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
 #include <WiFiClient.h>
-//#define USE_MQTT
+#define USE_MQTT
 
 int pirPin = 35;
 int calibrationTime = 30;
 
 // wifi creds
 //ured
-#define ssid1        "Tehnoloski_park_Zagreb"
-#define password1    "TpZ232!Raza"
+//#define ssid1        "Tehnoloski_park_Zagreb"
+//#define password1    "TpZ232!Raza"
+
+//stan
 //#define ssid1        "blabla"
 //#define password1    "hajduk1950"
-/*
-//mqtt credentials
+
+// hotspot
+#define ssid1        "zvone"
+#define password1    "hajduk1950"
+
+//qtt credentials
 #ifdef USE_MQTT
-  #define MQTT_SERVER      "192.168.254.252"
+  #define MQTT_SERVER      "192.168.43.47"
   #define MQTT_SERVERPORT  1883
   #define MQTT_USERNAME    "zvonimir"
   #define MQTT_KEY         "zadvarje"
-  #define MQTT_CAMERA1      "iot/camera/1"
-  #define MQTT_CAMERA1_IP      "iot/camera/ip/1"
+  #define MQTT_MOTION      "iot/motion/1"
   #include "MQTTStuff.h"
 #endif
-*/
+
 
 WiFiMulti wifiMulti;
 WiFiServer server(80);
@@ -50,7 +55,6 @@ void setup()
 
   Serial.begin(115200);
   wifiMulti.addAP(ssid1, password1);
-  //wifiMulti.addAP(ssid2, password2);
   Serial.println("Connecting Wifi...");
   if(wifiMulti.run() == WL_CONNECTED) {
       Serial.println("");
@@ -61,10 +65,8 @@ void setup()
 
   int retry = 3;
   Serial.println(WiFi.localIP());
-  // subscribe to "iot/camera/frontDoorCamera" if somebody sends message you will now
-//  mqtt.subscribe(&requestForCameraImage);
 
-  //MQTTConnect();
+  MQTTConnect();
 
   server.begin();
   Serial.println("server begin");
@@ -73,10 +75,11 @@ void setup()
 
 void loop()
 {
+  if(digitalRead(pirPin) == HIGH) {
+    if(motionDetected.publish(1))
+    {
+      Serial.println("Motion detected, I am publishing it");
+    }
+  }
   delay(1400);
-Serial.println(digitalRead(pirPin));
-digitalWrite(pirPin, LOW);
-delay(1400);
-Serial.println(digitalRead(pirPin));
-
 }

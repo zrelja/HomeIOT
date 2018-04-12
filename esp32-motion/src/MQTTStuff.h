@@ -4,8 +4,7 @@
 
 WiFiClient client;
 Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, MQTT_SERVERPORT, MQTT_USERNAME, MQTT_KEY);
-Adafruit_MQTT_Publish mqttcamera = Adafruit_MQTT_Publish(&mqtt, MQTT_CAMERA1_IP);
-Adafruit_MQTT_Subscribe requestForCameraImage = Adafruit_MQTT_Subscribe(&mqtt, MQTT_CAMERA1);
+Adafruit_MQTT_Publish motionDetected = Adafruit_MQTT_Publish(&mqtt, MQTT_MOTION);
 
 bool MQTTConnect() {
   int8_t ret;
@@ -29,17 +28,4 @@ bool MQTTConnect() {
   }
   Serial.println("MQTT connected");
   return true;
-}
-
-void MQTTLoop()
-{
-
-  // Now we can publish stuff!
-  //max 64kb
-  /*if (!mqttcamera.publish(bmp, 66))
-  {
-    Serial.println(F("Failed"));
-  } else {
-    Serial.println(F("OK!"));
-  }*/
 }
