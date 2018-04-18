@@ -76,10 +76,13 @@ void setup()
 void loop()
 {
   if(digitalRead(pirPin) == HIGH) {
-    if(motionDetected.publish(1))
+    if(motionDetected.publish("Yes!"))
     {
       Serial.println("Motion detected, I am publishing it");
     }
+  }
+  else {
+    motionDetected.publish("Nope.");
   }
   delay(1400);
 }

@@ -9,23 +9,23 @@
 #include "BMP.h"
 #define USE_MQTT
 
-const int SIOD = 25; //SDA
-const int SIOC = 23; //SCL
+const int SIOD = 26; //SDA
+const int SIOC = 27; //SCL
 
-const int VSYNC = 22;
-const int HREF = 26;
+const int VSYNC = 25;
+const int HREF = 23;
 
-const int XCLK = 27;
-const int PCLK = 21;
+const int XCLK = 21;
+const int PCLK = 22;
 
-const int D0 = 35;
-const int D1 = 17;
-const int D2 = 34;
-const int D3 = 5;
-const int D4 = 39;
-const int D5 = 18;
-const int D6 = 36;
-const int D7 = 19;
+const int D0 = 4;
+const int D1 = 5;
+const int D2 = 18;
+const int D3 = 19;
+const int D4 = 36;
+const int D5 = 39;
+const int D6 = 34;
+const int D7 = 35;
 
 
 // wifi creds
@@ -34,6 +34,9 @@ const int D7 = 19;
 #define password1    "TpZ232!Raza"
 //#define ssid1        "blabla"
 //#define password1    "hajduk1950"
+
+//#define ssid1        "Vip WLAN_8BD492"
+//#define password1    "DBBDBBEBCE"
 
 //mqtt credentials
 #ifdef USE_MQTT
@@ -59,6 +62,8 @@ void serve()
 {
     Serial.println("serviram");
   WiFiClient client = server.available();
+  Serial.println(client);
+
   if (client)
   {
     Serial.println("New Client.");
@@ -131,38 +136,24 @@ void setup()
   mqtt.subscribe(&requestForCameraImage);
   MQTTConnect();
 
-
-  camera = new OV7670(OV7670::Mode::QQVGA_RGB565, SIOD, SIOC, VSYNC, HREF, XCLK, PCLK, D0, D1, D2, D3, D4, D5, D6, D7);
-  BMP::construct16BitHeader(bmpHeader, camera->xres, camera->yres);
   server.begin();
   Serial.println("server begin");
+
+  camera = new OV7670(OV7670::Mode::QQQVGA_RGB565, SIOD, SIOC, VSYNC, HREF, XCLK, PCLK, D0, D1, D2, D3, D4, D5, D6, D7);
+
+  BMP::construct16BitHeader(bmpHeader, camera->xres, camera->yres);
+
+  Serial.println("Setup done");
+
 }
 
-
 void loop()
-{  int retry = 3;
-
-    // waiting for a message on "iot/camera/frontDoorCamera"
-    Adafruit_MQTT_Subscribe *subscription;
-    while ((subscription = mqtt.readSubscription(5000))) {
-      if (subscription == &requestForCameraImage) {
-        Serial.print("signal primljen\n");
-         delay(500);
-        Serial.println((char *)requestForCameraImage.lastread);
-        if(mqttcamera.publish(WiFi.localIP().toString().c_str()))
-        {
-          Serial.println("IP address sent");
-        }
-      //  Serial.println((char*)tCommand.lastread);
-      }
-    }
-
-/*  Serial.println(WiFi.localIP());
+{
+  Serial.println(WiFi.localIP());
 
   camera->oneFrame();
   Serial.println("kamera slikana");
   Serial.println(WiFi.localIP());
-
   serve();
-*/
+
 }
