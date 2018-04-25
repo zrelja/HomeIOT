@@ -1,0 +1,13 @@
+// This is the Items File
+
+//Camera
+
+//Camera ESP32CAMERA1 "Camera 1"
+Switch DEMOSW "Demo Switch"
+Image CAMERA "Camera1"
+
+//Dimmer MKBlindsControl1 "MK Blinds [%s]" <rollershutter> [ "Lighting" ] {mqtt=">[mosquitto:iot/camera/frontDoorCamera:command:*:default]"}
+//Contact motionDetector1 "Front door motion detector" (all) {mqtt=">[mosquitto:iot/motion/1:command:on:default],>[mosquitto:iot/motion/1:command:off:default]"}
+//Switch motionDetector1 "Is someting in front of the doors?" (all) {mqtt=">[mosquitto:iot/motion/1:command:*:default]"}
+Switch motionDetector1 "Switch 1" (all) {mqtt=">[mosquitto:iot/motion/1:command:ON:default],>[mosquitto:iot/motion/1:command:OFF:default],<[mosquitto:iot/motion/1:state:default]"}
+

@@ -1,0 +1,9 @@
+// This is the Items File
+
+//Camera
+
+
+
+String motionDetector1 "Anybody at front door? [%s]" <door> {mqtt="<[mosquitto:iot/motion/1:state:default]"} 
+Switch DetectedObject1 "In front of the door is " { http=">[ON:POST:http://localhost:9000/object_detection_api/?image=images.pexels.com/photos/356378/pexels-photo-356378.jpeg]"}
+
