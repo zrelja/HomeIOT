@@ -1,9 +1,0 @@
-
-sitemap home label="Home IOT"
-{
-       Frame label="Front door"
-       {
-	       Text item=motionDetector1
-//               Switch item=DetectedObject1
-       }
-}
