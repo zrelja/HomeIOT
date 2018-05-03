@@ -1,5 +1,8 @@
 # HomeIOT
-Home automation with IOT, using networked ESP32 microcontroller
+Home automation with IOT, using networked ESP32 microcontrollers.
+
+Goal is to detect a movement and send a image to the object recognition API.<br/>
+If a person is on the image, openhab2 sends a message to mobile phone via Telegram API.<br/>
 
 Hardware:
 
