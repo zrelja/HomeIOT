@@ -31,6 +31,8 @@ int calibrationTime = 30;
   #define MQTT_USERNAME    "zvonimir"
   #define MQTT_KEY         "zadvarje"
   #define MQTT_MOTION      "iot/motion/1"
+  #define MQTT_LED         "iot/led/1"
+
   #include "MQTTStuff.h"
 #endif
 
@@ -82,6 +84,8 @@ void setup()
 void loop()
 {
   if(digitalRead(pirPin) == HIGH) {
+    publishLed.publish("TRUE");
+
     if(motionDetected.publish("Yes!"))
     {
       Serial.println("Motion detected, I am publishing it");
@@ -90,8 +94,10 @@ void loop()
     }
   }
   else {
-    motionDetected.publish("Nope.");
+    publishLed.publish("FALSE");
     digitalWrite(ledPin, LOW);
+
+    motionDetected.publish("Nope.");
 
   }
   delay(1400);

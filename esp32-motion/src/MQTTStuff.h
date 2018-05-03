@@ -5,6 +5,7 @@
 WiFiClient client;
 Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, MQTT_SERVERPORT, MQTT_USERNAME, MQTT_KEY);
 Adafruit_MQTT_Publish motionDetected = Adafruit_MQTT_Publish(&mqtt, MQTT_MOTION);
+Adafruit_MQTT_Publish publishLed = Adafruit_MQTT_Publish(&mqtt, MQTT_LED);
 
 bool MQTTConnect() {
   int8_t ret;
