@@ -3,8 +3,8 @@ Home automation with IOT, using networked ESP32 microcontroller
 
 Hardware:
 
-2 ESP32 microcontrollers
-OV2640 camera
+2 ESP32 microcontrollers<br/>
+OV2640 camera<br/>
 PIR sensor
 Linux system with OpenHab2 and MQTT broker (also can be implemented on Windows or Mac)
 
