@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  
+    django:
+        restart: always
+        build:
+            context: .
+            dockerfile: ./docker/django/Dockerfile
+        volumes:
+            - .:/django
