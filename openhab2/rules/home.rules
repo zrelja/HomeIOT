@@ -1,0 +1,21 @@
+
+rule "Somebody is in front of the door"
+when
+   Item motionDetector1 changed
+then
+  
+//sendTelegramPhoto("HomeIOT_bot", "http://192.168.0.105/jpg", "bla")
+
+ 
+var String Data = executeCommandLine('curl --silent --max-time 100 "http://localhost:9000/object_detection_api/?image=192.168.0.105/jpg"', 100000)
+var  class = transform("JSONPATH", "$.result[0].class", Data)   
+var score = transform("JSONPATH", "$.result[0].score", Data)
+var res = "There is a " + score + " probability that " + class + " is at the doors!"
+if(class ==  'person') {
+sendTelegram("HomeIOT_bot", "There is a " + class + " at front doors! Here is a picture..")
+sendTelegramPhoto("HomeIOT_bot", "http://192.168.0.105/jpg", res)
+
+}
+sendBroadcastNotification("Somebody is in front of the door!")
+sendBroadcastNotification(Data)   
+end

@@ -100,5 +100,5 @@ void loop()
     motionDetected.publish("Nope.");
 
   }
-  delay(1400);
+  delay(4000);
 }
