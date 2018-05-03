@@ -5,7 +5,8 @@ Hardware:
 
 2 ESP32 microcontrollers<br/>
 OV2640 camera<br/>
-PIR sensor
+PIR sensor<br/>
+LED<br/>
 Linux system with OpenHab2 and MQTT broker (also can be implemented on Windows or Mac)
 
 Software folders:
