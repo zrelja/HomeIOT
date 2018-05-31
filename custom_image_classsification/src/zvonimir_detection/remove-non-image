@@ -1,0 +1,4 @@
+for i in $(ls *jpg)
+do
+    file $i | egrep -qi "jpeg|png" || rm $i 
+done
