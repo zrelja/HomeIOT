@@ -32,3 +32,5 @@ esp32-nofifo/\.gcc-flags\.json
 esp32-ov2640/sdkconfig
 
 esp32-ov2640/sdkconfig\.old
+
+object_detector/backend/__pycache__/
