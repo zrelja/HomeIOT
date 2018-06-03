@@ -1,4 +1,36 @@
 
-object_detector
+custom_image_classsification/src/zvonimir_detection/data/Zvonimir Relja/
+
+custom_image_classsification/src/zvonimir_detection/data/people/
+
+custom_image_classsification/src/zvonimir_detection/data/ljudi/
+
+custom_image_classsification/src/zvonimir_detection/data/zvone/
+
+custom_image_classsification/src/zvonimir_detection/face_recognition/ljudi/
+
+custom_image_classsification/src/zvonimir_detection/face_recognition/zvone/
+
+custom_image_classsification/src/zvonimir_detection/testne/
+
+esp32-nofifo/.pioenvs
+
+esp32-ov2640/build
+
+esp32-motion/.pioenvs
 
 *.jpg
+
+esp32-motion/\.clang_complete
+
+esp32-motion/\.gcc-flags\.json
+
+esp32-nofifo/\.clang_complete
+
+esp32-nofifo/\.gcc-flags\.json
+
+esp32-ov2640/sdkconfig
+
+esp32-ov2640/sdkconfig\.old
+
+object_detector/backend/__pycache__/
