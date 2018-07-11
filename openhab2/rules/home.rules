@@ -4,18 +4,43 @@ when
    Item motionDetector1 changed
 then
   
-//sendTelegramPhoto("HomeIOT_bot", "http://192.168.0.105/jpg", "bla")
 
- 
-var String Data = executeCommandLine('curl --silent --max-time 100 "http://localhost:9000/object_detection_api/?image=192.168.0.105/jpg"', 100000)
-var  class = transform("JSONPATH", "$.result[0].class", Data)   
-var score = transform("JSONPATH", "$.result[0].score", Data)
-var res = "There is a " + score + " probability that " + class + " is at the doors!"
-if(class ==  'person') {
-sendTelegram("HomeIOT_bot", "There is a " + class + " at front doors! Here is a picture..")
-sendTelegramPhoto("HomeIOT_bot", "http://192.168.0.105/jpg", res)
+//var String Data = executeCommandLine('curl --silent --max-time 100 "http://localhost:9000/object_detection_api/?image=192.168.0.105/jpg"', 100000)
+
+var String Data = executeCommandLine('curl --silent --max-time 100 "http://localhost:9000/face_recognition_api/?image=i.imgur.com/Y29HBHk.jpg"', 100000)
+
+var  recognized = transform("JSONPATH", "$.recognized", Data)  
+
+
+if (recognized == 'true') {
+
+    var name = transform("JSONPATH", "$.name", Data)  
+    //This should be working, but isn't. Loading picture directly from server..
+    //var String base64Image = transform("JSONPATH", "$.image", Data)
+    //sendTelegram("HomeIOT_bot", base64Image, "sent from Openhab")
+    
+    // picture directly from server, because openhab telegram binding is not fully working..
+
+    executeCommandLine('curl --silent --max-time 100 -s -X POST "https://api.telegram.org/bot595748741:AAGJrKY7EJTqJSvFP5r6dSnQ5C50YCn873U/sendPhoto" -F chat_id=583017256 -F  photo="@/home/zvonimir/Documents/PlatformIO/Projects/HomeIOT/object_detector/backend/static/unknown_people/unknown.jpg" ', 10000)
+    sendTelegram("HomeIOT_bot", name + " je ispred vrata..")
+    var message = "Hello " + name + "... Welcome home. Have a good rest of a day! "
+    say(message)
+} 
+else if (recognized == 'false') {
+
+
+        
+    executeCommandLine('curl --silent --max-time 100 -s -X POST "https://api.telegram.org/bot595748741:AAGJrKY7EJTqJSvFP5r6dSnQ5C50YCn873U/sendPhoto" -F chat_id=583017256 -F  photo="@/home/zvonimir/Documents/PlatformIO/Projects/HomeIOT/object_detector/backend/static/unknown_people/unknown.jpg" ', 10000)
+    say("I have no idea who you are! Go away!")
+    sendTelegram("HomeIOT_bot", "Ne mogu prepoznati ovu osobu ispred Vaših vrata! Ako znate tko je upišite /nauci")
 
 }
+
+//if(class ==  'person') {
+//sendTelegram("HomeIOT_bot", "There is a " + class + " at front doors! Here is a picture..")
+//sendTelegramPhoto("HomeIOT_bot", "http://192.168.0.105/jpg", res)
+
+//}
 sendBroadcastNotification("Somebody is in front of the door!")
 sendBroadcastNotification(Data)   
 end

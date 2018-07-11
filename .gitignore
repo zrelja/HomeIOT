@@ -34,3 +34,9 @@ esp32-ov2640/sdkconfig
 esp32-ov2640/sdkconfig\.old
 
 object_detector/backend/__pycache__/
+
+*.pyc
+
+\.fr-VfC5be/
+
+\.fr-9UV3xg/
