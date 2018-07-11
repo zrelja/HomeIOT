@@ -65,7 +65,7 @@ def face_recognition_api(request):
         url = request.GET.get('image')
         print(url)
 
-        image_url = "http://" + url
+        image_url = "https://" + url
         spremanje_load_slike = time.time()
         urllib.request.urlretrieve(image_url, "backend/static/unknown_people/unknown.jpg")
 
@@ -83,7 +83,7 @@ def face_recognition_api(request):
         face_distances = face_recognition.face_distance(all_known_persons_encodings, unknown_face_encodings)
         data['recognized'] = False
         base64image = base64.b64encode(open("backend/static/unknown_people/unknown.jpg","rb").read())
-        data['image'] = str.encode('data:image/jpeg;base64,') + base64image
+        data['image'] = str.encode('data:image/jpeg;base64, ') + base64image
         for i, face_distance in enumerate(face_distances):
               if(face_distance < 0.63):
                 data['recognized'] = True

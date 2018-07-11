@@ -1,0 +1,8 @@
+// This is rules file
+// If somebody is in front of the door send push notif
+
+rule "Somebody is in front"
+when 
+Item motionDetector1 recieved update TRUE
+then 
+sendBroadcastNotification("Somebody is in front of the doors!)end

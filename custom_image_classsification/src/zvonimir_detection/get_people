@@ -1,7 +1,0 @@
-echo "hello"
-curl -s  "http://www.image-net.org/api/text/imagenet.synset.geturls?wnid=n07942152" | \
-sed 's/^M//' | \
-while read file
-do
-  curl -m 3 -O ${file%$'\r'}
-done
